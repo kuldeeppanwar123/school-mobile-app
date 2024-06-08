@@ -1,12 +1,8 @@
-import React from 'react';
-import {SafeAreaView, Text,TouchableOpacity} from 'react-native';
-import Login from './src/screens/Login';
+import React from 'react'
+import Login from './src/screens/Login'
 
-function App() {
+export default function App() {
   return (
-  //  <Text className="text-red-700">Hello Kuldeep</Text>
-  <Login/>
-  );
+    <Login/>
+  )
 }
-
-export default App;

@@ -1,59 +1,91 @@
-import {Formik} from 'formik';
-import {SafeAreaView, View, TextInput,Text, Button} from 'react-native';
-import {object,string,email} from 'yup';
+import React, {useMemo, useState, useRef} from 'react';
+import {
+  SafeAreaView,
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+} from 'react-native';
+import Video from 'react-native-video';
+import bgvideo from '../assets/videos/loginBG.mp4';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import BottomSheet from '@gorhom/bottom-sheet';
+import LoginForm from '../components/LoginForm';
 
-const Login = () => {
-    const userSchemaValidation = object({
-        email:string().email("Invalid email").required("Email is required"),
-        password:string().min(4,"password must have atleast 4 characters").max(8,"password can have atmost 8 characters").required("password is required")
-    })
+function Login() {
+  const snapPoints = useMemo(() => ['60%'], []);
+  const bottomSheetRef = useRef(null);
+
+  const handleClosePress = () => {
+    bottomSheetRef.current?.close();
+  };
+  const handleOpenPress = () => {
+    bottomSheetRef.current?.expand();
+  };
+
   return (
-    <SafeAreaView className="border-2 border-red-600 min-h-full">
-      <Formik
-        initialValues={{
-            email: '',
-            password:''
-        }}
-        validationSchema={userSchemaValidation}
-        onSubmit={values => {
-          console.log(values);
-        }}>
-        {({handleChange, handleBlur, handleSubmit, values,errors,touched}) => (
-          <View className="px-2 py-5 flex-1 flex-col gap-4">
-            <View className="flex-1 border-2  ">
-                <View className="">
-                    <TextInput
-                    onChangeText={handleChange('email')}
-                    onBlur={handleBlur('email')}
-                    values={values.email}
-                    className="border-2"
-                    />
-                    {touched.email && errors.email && (
-                        <Text className="text-red-600">{errors.email}</Text>
-                    )}
-                </View>
-                <View>
-                    <TextInput
-                    onChangeText={handleChange('password')}
-                    onBlur={handleBlur('password')}
-                    values={values.password}
-                    className="border-2  "
-                    secureTextEntry
-                    />
-                    {touched.password && errors.password && (
-                        <Text className="text-red-600">{errors.password}</Text>
-                    )                
-                    }
-                </View>
+    <GestureHandlerRootView style={{flex: 1}}>
+      <View style={styles.container}>
+        <Video
+          resizeMode="cover"
+          muted={true}
+          repeat
+          source={bgvideo}
+          style={styles.backgroundVideo}
+        />
+        <View style={styles.overlay}>
+          <TouchableOpacity
+            className={styles.swipeContainer}
+            onPress={handleOpenPress}>
+            <Text style={styles.swipeText}>Click to Login</Text>
+          </TouchableOpacity>
+          <BottomSheet
+            enablePanDownToClose={true}
+            snapPoints={snapPoints}
+            index={-1}
+            ref={bottomSheetRef}
+            backgroundStyle={{borderRadius: 50}}>
+            <View style={styles.contentContainer}>
+              <LoginForm/>
             </View>
-            <View>
-              <Button onPress={handleSubmit} title="Submit" />
-            </View>
-          </View>
-        )}
-      </Formik>
-    </SafeAreaView>
+          </BottomSheet>
+        </View>
+      </View>
+    </GestureHandlerRootView>
   );
-};
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  backgroundVideo: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+  },
+  overlay: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    paddingBottom: 50,
+  },
+  swipeContainer: {
+    alignItems: 'center',
+    marginBottom: 20,
+    backgroundColor: 'white',
+  },
+  swipeText: {
+    alignSelf: 'center',
+    color: 'white',
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  icon: {
+    alignSelf: 'center',
+  },
+});
 
 export default Login;
