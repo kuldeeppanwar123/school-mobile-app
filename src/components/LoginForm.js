@@ -1,5 +1,7 @@
+/* eslint-disable prettier/prettier */
 import {useState} from 'react';
 import {Formik} from 'formik';
+import {useNavigation} from '@react-navigation/native';
 import {
   SafeAreaView,
   TouchableOpacity,
@@ -13,6 +15,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 const LoginForm = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const navigation = useNavigation();
 
   const userSchemaValidation = object({
     email: string().email('Invalid email').required('Email is required'),
@@ -39,6 +42,7 @@ const LoginForm = () => {
           validationSchema={userSchemaValidation}
           onSubmit={values => {
             console.log(values);
+            navigation.navigate('Home');
           }}>
           {({
             handleChange,
@@ -62,7 +66,7 @@ const LoginForm = () => {
                       onChangeText={handleChange('email')}
                       onBlur={handleBlur('email')}
                       values={values.email}
-                      className="border border-[#e5e7e6] rounded-lg  px-4 text-md "
+                      className="border text-black border-[#e5e7e6] rounded-lg  px-4 text-md "
                       placeholder="abc@gmail.com"
                     />
                     {touched.email && errors.email && (
@@ -77,7 +81,7 @@ const LoginForm = () => {
                           onChangeText={handleChange('password')}
                           onBlur={handleBlur('password')}
                           values={values.password}
-                          className=" rounded-lg w-5/6 px-4  text-md"
+                          className=" rounded-lg w-5/6 px-4 text-black  text-md"
                           placeholder="Enter Your Password "
                           secureTextEntry={isPasswordVisible ? false : true}
                         />

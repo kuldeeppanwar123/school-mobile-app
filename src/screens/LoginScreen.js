@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React, {useMemo, useState, useRef} from 'react';
 import {
   SafeAreaView,
@@ -12,7 +13,7 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import BottomSheet from '@gorhom/bottom-sheet';
 import LoginForm from '../components/LoginForm';
 
-function Login() {
+function LoginScreen() {
   const snapPoints = useMemo(() => ['60%'], []);
   const bottomSheetRef = useRef(null);
 
@@ -88,4 +89,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Login;
+export default LoginScreen;
